@@ -30,6 +30,8 @@ declare module monaco.languages.json {
              */
             readonly schema?: any;
         }[];
+
+        readonly schemaRequestService? : (url: string) => Promise
     }
 
     export interface LanguageServiceDefaults {

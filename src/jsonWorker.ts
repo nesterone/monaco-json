@@ -49,7 +49,10 @@ export class JSONWorker {
 		this._ctx = ctx;
 		this._languageSettings = createData.languageSettings;
 		this._languageId = createData.languageId;
-		this._languageService = jsonService.getLanguageService({ promiseConstructor: PromiseAdapter });
+		this._languageService = jsonService.getLanguageService({
+			schemaRequestService: createData.languageSchemaRequestService,
+			promiseConstructor: PromiseAdapter
+		});
 		this._languageService.configure(this._languageSettings);
 	}
 
@@ -114,6 +117,7 @@ export class JSONWorker {
 export interface ICreateData {
 	languageId: string;
 	languageSettings: jsonService.LanguageSettings;
+    languageSchemaRequestService: jsonService.SchemaRequestService;
 }
 
 export function create(ctx: IWorkerContext, createData: ICreateData): JSONWorker {
