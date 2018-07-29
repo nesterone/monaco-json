@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-	<link rel="stylesheet" data-name="vs/editor/editor.main" href="../node_modules/monaco-editor-core/dev/vs/editor/editor.main.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <link rel="stylesheet" data-name="vs/editor/editor.main"
+          href="../node_modules/monaco-editor-core/dev/vs/editor/editor.main.css">
+    <script>
+		// Loading basic-languages to get the json language definition
+		var require = {
+			baseUrl: '.',
+			paths: {
+				'vs/basic-languages': '../node_modules/monaco-languages/release/dev',
+				'vs/language/json': '../release/dev',
+				'vs/base': '../node_modules/monaco-editor-core/dev/vs/base',
+				'vs/editor': '../node_modules/monaco-editor-core/dev/vs/editor',
+				'vs/loader': '../node_modules/monaco-editor-core/dev/vs/loader'
+			}
+		}
+    </script>
+    <script src="../node_modules/monaco-editor-core/dev/vs/loader.js"></script>
+
 </head>
+
 <body>
 
 <h2>Monaco Editor JSON test page</h2>
 <div id="container" style="width:800px;height:600px;border:1px solid grey"></div>
 
-<script>
-	// Loading basic-languages to get the json language definition
-	var require = {
-		paths: {
-			'vs/basic-languages': '../node_modules/monaco-languages/release/dev',
-			'vs/language/json': '../release/dev',
-			'vs': '../node_modules/monaco-editor-core/dev/vs'
-		}
-	};
-</script>
-<script src="../node_modules/monaco-editor-core/dev/vs/loader.js"></script>
 <script src="../node_modules/monaco-editor-core/dev/vs/editor/editor.main.nls.js"></script>
 <script src="../node_modules/monaco-editor-core/dev/vs/editor/editor.main.js"></script>
 
@@ -28,78 +34,53 @@
 	require([
 		'vs/basic-languages/monaco.contribution',
 		'vs/language/json/monaco.contribution'
-	], function() {
+	], function () {
+		monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+			validate: true,
+			enableSchemaRequest: true,
+			schemas: [
+				{
+					uri: 'https://vega.github.io/schema/vega-lite/v2.json',
+				},
+				{
+					uri: 'https://vega.github.io/schema/vega-lite/v2.0.json',
+				},
+				{
+					uri: 'https://vega.github.io/schema/vega-lite/v2.1.json',
+				},
+				{
+					uri: 'https://vega.github.io/schema/vega-lite/v2.2.json',
+				},
+				{
+					uri: 'https://vega.github.io/schema/vega-lite/v2.3.json',
+				},
+				{
+					uri: 'https://vega.github.io/schema/vega-lite/v2.4.json',
+				},
+				{
+					uri: 'https://vega.github.io/schema/vega/v3.json',
+				},
+				{
+					uri: 'https://vega.github.io/schema/vega/v3.0.json',
+				},
+				{
+					uri: 'https://vega.github.io/schema/vega/v3.1.json',
+				},
+				{
+					uri: 'https://vega.github.io/schema/vega/v4.json',
+				},
+				{
+					uri: 'https://vega.github.io/schema/vega/v4.0.json',
+				}
+			]
+		});
+
+
 		var editor = monaco.editor.create(document.getElementById('container'), {
-			value: [
-				'{',
-				'	"type": "team",',
-				'	"test": {',
-				'		"testPage": "tools/testing/run-tests.htm",',
-				'		"enabled": true',
-				'	},',
-				'	"search": {',
-				'		"excludeFolders": [',
-				'			".git",',
-				'			"node_modules",',
-				'			"tools/bin",',
-				'			"tools/counts",',
-				'			"tools/policheck",',
-				'			"tools/tfs_build_extensions",',
-				'			"tools/testing/jscoverage",',
-				'			"tools/testing/qunit",',
-				'			"tools/testing/chutzpah",',
-				'			"server.net"',
-				'		]',
-				'	},',
-				'	"languages": {',
-				'		"vs.languages.typescript": {',
-				'			"validationSettings": [{',
-				'				"scope":"/",',
-				'				"noImplicitAny":true,',
-				'				"noLib":false,',
-				'				"extraLibs":[],',
-				'				"semanticValidation":true,',
-				'				"syntaxValidation":true,',
-				'				"codeGenTarget":"ES5",',
-				'				"moduleGenTarget":"",',
-				'				"lint": {',
-				'					"emptyBlocksWithoutComment": "warning",',
-				'					"curlyBracketsMustNotBeOmitted": "warning",',
-				'					"comparisonOperatorsNotStrict": "warning",',
-				'					"missingSemicolon": "warning",',
-				'					"unknownTypeOfResults": "warning",',
-				'					"semicolonsInsteadOfBlocks": "warning",',
-				'					"functionsInsideLoops": "warning",',
-				'					"functionsWithoutReturnType": "warning",',
-				'					"tripleSlashReferenceAlike": "warning",',
-				'					"unusedImports": "warning",',
-				'					"unusedVariables": "warning",',
-				'					"unusedFunctions": "warning",',
-				'					"unusedMembers": "warning"',
-				'				}',
-				'			},',
-				'			{',
-				'				"scope":"/client",',
-				'				"baseUrl":"/client",',
-				'				"moduleGenTarget":"amd"',
-				'			},',
-				'			{',
-				'				"scope":"/server",',
-				'				"moduleGenTarget":"commonjs"',
-				'			},',
-				'			{',
-				'				"scope":"/build",',
-				'				"moduleGenTarget":"commonjs"',
-				'			},',
-				'			{',
-				'				"scope":"/node_modules/nake",',
-				'				"moduleGenTarget":"commonjs"',
-				'			}],',
-				'			"allowMultipleWorkers": true',
-				'		}',
-				'	}',
-				'}',
-			].join('\n'),
+			value:
+				`{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json"
+}`,
 			language: 'json'
 		});
 	});

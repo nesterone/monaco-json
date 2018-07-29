@@ -70,7 +70,7 @@ export class WorkerManager {
 				createData: {
 					languageSettings: this._defaults.diagnosticsOptions,
 					languageId: this._defaults.languageId,
-                    languageSchemaRequestService: this._defaults.diagnosticsOptions.schemaRequestService
+					 enableSchemaRequest: this._defaults.diagnosticsOptions.enableSchemaRequest
 				}
 			});
 

@@ -30,8 +30,10 @@ declare module monaco.languages.json {
              */
             readonly schema?: any;
         }[];
-
-        readonly schemaRequestService? : (url: string) => Promise
+        /**
+         *  If set, the schema service would load schema content on demand, otherwise content would be taken from `schemas` property
+         */
+        readonly enableSchemaRequest? : boolean
     }
 
     export interface LanguageServiceDefaults {

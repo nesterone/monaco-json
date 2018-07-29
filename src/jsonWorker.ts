@@ -11,6 +11,11 @@ import IWorkerContext = monaco.worker.IWorkerContext;
 import * as jsonService from 'vscode-json-languageservice';
 import * as ls from 'vscode-languageserver-types';
 
+let defaultSchemaRequestService;
+if (typeof fetch !== 'undefined'){
+	defaultSchemaRequestService = function (url) { return fetch(url).then(response => response.text())};
+}
+
 class PromiseAdapter<T> implements jsonService.Thenable<T> {
 	private wrapped: monaco.Promise<T>;
 
@@ -50,7 +55,7 @@ export class JSONWorker {
 		this._languageSettings = createData.languageSettings;
 		this._languageId = createData.languageId;
 		this._languageService = jsonService.getLanguageService({
-			schemaRequestService: createData.languageSchemaRequestService,
+			schemaRequestService: createData.enableSchemaRequest && defaultSchemaRequestService,
 			promiseConstructor: PromiseAdapter
 		});
 		this._languageService.configure(this._languageSettings);
@@ -117,7 +122,7 @@ export class JSONWorker {
 export interface ICreateData {
 	languageId: string;
 	languageSettings: jsonService.LanguageSettings;
-    languageSchemaRequestService: jsonService.SchemaRequestService;
+    enableSchemaRequest: boolean;
 }
 
 export function create(ctx: IWorkerContext, createData: ICreateData): JSONWorker {
